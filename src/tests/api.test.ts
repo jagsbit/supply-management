@@ -5,7 +5,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ── Mock Prisma ──────────────────────────────────────────────────────────────
-const mockPrisma = {
+const mockPrisma = vi.hoisted(() => ({
   supplyRequest: {
     findUnique: vi.fn(),
     findMany: vi.fn(),
@@ -18,7 +18,7 @@ const mockPrisma = {
     update: vi.fn(),
   },
   $transaction: vi.fn(),
-};
+}));
 
 vi.mock("@/lib/db", () => ({ prisma: mockPrisma }));
 

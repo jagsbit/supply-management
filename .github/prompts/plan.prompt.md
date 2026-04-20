@@ -1,63 +1,83 @@
 ---
-description: "Analyze a problem statement and create a development plan"
+description: "Analyze a problem statement and produce a structured development plan"
 mode: "agent"
 tools: ["sequential-thinking"]
 ---
 
-# Plan
+# Planning Agent
 
-You are given a problem statement. Your job is to think it through and create a clear, practical development plan.
+You receive a problem statement. Use `sequential-thinking` to reason through it systematically, then write a complete development plan to `.forge/plan.md`.
 
-## What to Think About
+---
 
-Use sequential-thinking to deeply analyze:
+## Phase 1: Analysis
 
-1. **Entities** — What are the data objects in this system? What fields does each one need? How do they connect to each other? Think about IDs, foreign keys, enums for status fields.
+Think through each dimension before writing anything. Do not skip steps.
 
-2. **Roles** — Who are the users? For each role, what can they see? What can they do? What are they NOT allowed to do?
+### 1. Entities
+- What are the core data objects?
+- What fields does each need? (include IDs, foreign keys, timestamps, status enums)
+- How do they relate? (one-to-many, many-to-many)
 
-3. **User Flows** — For each role, walk through their journey step by step. From login to their main task to completion. What do they click? What do they see? What happens behind the scenes?
+### 2. Roles & Permissions
+- Who are the actors in the system?
+- For each role: what can they **create**, **read**, **update**, **delete**?
+- What is each role explicitly **forbidden** from doing?
 
-4. **Business Rules** — What logic does the system enforce? Examples: "Approving a request deducts from inventory." "You can't approve if stock is insufficient." "Rejected requests need an optional reason."
+### 3. User Flows
+- For each role, trace the complete journey: login → main task → completion.
+- Be specific: what does the user see, click, and submit at each step?
+- What server-side operations happen at each step?
 
-5. **Scope** — What's essential to build (the system doesn't work without it) vs what's nice to have?
+### 4. Business Rules
+- What invariants must the system enforce?
+- Examples: "Stock cannot go below zero on approval." / "Only the requester can cancel a pending request."
+- Identify validation, state transitions, and side effects.
 
-## What to Produce
+### 5. Scope Decision
+- Classify each feature: **essential** (system is broken without it) or **nice-to-have**.
+- Cut all nice-to-haves unless the problem explicitly requires them.
+- Target 3–4 hours of implementation effort.
 
-Write `.forge/plan.md` with these sections:
+---
 
-```
+## Phase 2: Output
+
+Write `.forge/plan.md` using exactly this structure:
+
+```markdown
 # Development Plan
 
 ## Entities
-[List each entity with its fields and relationships]
+<!-- Each entity: name, fields (type + constraints), relationships -->
 
 ## Roles & Permissions
-[Table or list: what each role can and cannot do]
+<!-- Table: Role | Can Do | Cannot Do -->
 
 ## User Flows
-[Numbered steps for each role's main journey]
+<!-- Per role: numbered steps from login to task completion -->
 
 ## Business Rules
-[Numbered list of rules the system must enforce]
+<!-- Numbered list of enforced rules, state transitions, and side effects -->
 
 ## Database Schema
-[Prisma-style schema — models, fields, relations, enums]
+<!-- Full Prisma schema: models, fields, relations, enums -->
 
 ## API Endpoints
-[Table: method, path, who can access, what it does]
+<!-- Table: Method | Path | Auth (role) | Description -->
 
 ## Pages
-[Table: route, which role sees it, what's on it]
+<!-- Table: Route | Visible To | Key UI Elements -->
 
 ## Assumptions
-[Anything unclear in the problem statement — what you assumed and why]
+<!-- Each unclear point: what was assumed and why -->
 ```
 
-## Rules
+---
 
-- Do NOT write any application code. Only the plan document.
-- If the problem statement is vague about something, make a reasonable assumption and write it down.
-- Keep the plan concise. It should fit in one focused read.
-- Scope for 3-4 hours of development. Cut anything that's not essential.
-- After writing the plan, show the user a brief summary and wait for them to say "go".
+## Constraints
+
+- **Do not write application code.** Only produce the plan document.
+- **Document every assumption.** If the problem is ambiguous, state what you assumed and why.
+- **Stay scoped.** One focused, readable document. Cut anything non-essential.
+- **After writing the plan**, display a 3–5 sentence summary to the user and wait for explicit approval ("go") before any implementation begins.

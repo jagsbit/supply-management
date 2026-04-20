@@ -85,8 +85,8 @@ export default function EmployeeRequestsPage() {
                     </SelectTrigger>
                     <SelectContent>
                       {inventory.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.name} ({item.quantity} {item.unit} available)
+                        <SelectItem key={item.id} value={item.id} disabled={item.quantity === 0}>
+                          {item.name} — {item.quantity > 0 ? "In Stock" : "Out of Stock"}
                         </SelectItem>
                       ))}
                     </SelectContent>

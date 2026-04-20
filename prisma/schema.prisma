@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  passwordHash String
+  role         Role           @default(EMPLOYEE)
+  createdAt    DateTime       @default(now())
+  requests     SupplyRequest[] @relation("requester")
+  reviews      SupplyRequest[] @relation("reviewer")
+}
+
+model InventoryItem {
+  id          String         @id @default(cuid())
+  name        String
+  description String?
+  quantity    Int            @default(0)
+  unit        String         @default("pcs")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  requests    SupplyRequest[]
+}
+
+model SupplyRequest {
+  id               String        @id @default(cuid())
+  requesterId      String
+  requester        User          @relation("requester", fields: [requesterId], references: [id])
+  inventoryItemId  String
+  inventoryItem    InventoryItem @relation(fields: [inventoryItemId], references: [id])
+  quantity         Int
+  remarks          String?
+  status           RequestStatus @default(PENDING)
+  rejectionReason  String?
+  reviewedById     String?
+  reviewedBy       User?         @relation("reviewer", fields: [reviewedById], references: [id])
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}

@@ -16,7 +16,8 @@ Set up the project foundation:
 - Install dependencies: prisma, @prisma/client, next-auth@beta, @auth/prisma-adapter, zod, react-hook-form, @hookform/resolvers, bcryptjs, @types/bcryptjs
 - Initialize shadcn/ui and add components you'll need (button, card, input, label, table, badge, dialog, select, textarea, toast, dropdown-menu, separator, tabs)
 - Create the Prisma schema from the plan
-- Set up `.env` from `.env.example`
+- Set up `.env` from `.env.example` — use `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/officesupply"`
+- Create the database: `docker exec postgres-db psql -U postgres -c "CREATE DATABASE officesupply;"`
 - Run `npx prisma db push` and `npx prisma generate`
 - Create the directory structure: `src/lib/`, `src/services/`, `src/types/`, `src/components/`, `src/lib/validations/`
 

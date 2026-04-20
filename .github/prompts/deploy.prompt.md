@@ -23,7 +23,7 @@ vercel --prod
 
 ## Step 4 — Set Environment Variables
 Set these on Vercel (dashboard or CLI):
-- `DATABASE_URL` — the Neon production connection string
+- `DATABASE_URL` — `postgresql://postgres:postgres@localhost:5432/officesupply` (or a cloud-accessible URL)
 - `NEXTAUTH_SECRET` — the generated secret
 - `NEXTAUTH_URL` — the Vercel deployment URL (update after first deploy)
 

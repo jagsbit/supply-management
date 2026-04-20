@@ -23,7 +23,8 @@ You drive 4 phases automatically: Plan → Build → Test → Deploy.
 - Install dependencies: prisma, @prisma/client, next-auth@beta, @auth/prisma-adapter, zod, react-hook-form, @hookform/resolvers, bcryptjs, @types/bcryptjs
 - Initialize shadcn/ui and add components (button, card, input, label, table, badge, dialog, select, textarea, toast, dropdown-menu, separator, tabs)
 - Create the Prisma schema from the plan
-- Set up `.env` from `.env.example`
+- Set up `.env` from `.env.example` — DATABASE_URL is `postgresql://postgres:postgres@localhost:5432/officesupply`
+- Create the database if it doesn't exist: `docker exec postgres-db psql -U postgres -c "CREATE DATABASE officesupply;"`
 - Run `npx prisma db push` and `npx prisma generate`
 - **Check:** `npm run build` must pass. **Commit:** `[scaffold] project initialized`
 
@@ -65,9 +66,12 @@ You drive 4 phases automatically: Plan → Build → Test → Deploy.
 ## Phase 4 — Deploy
 - Push to GitHub
 - Deploy with `vercel --prod`
-- Set environment variables on Vercel (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL)
-- Run `npx prisma db push` against production database
-- Run `npx prisma db seed` against production database
+- Set environment variables on Vercel:
+  - `DATABASE_URL` — `postgresql://postgres:postgres@localhost:5432/officesupply` (or a tunnelled/cloud URL if needed)
+  - `NEXTAUTH_SECRET` — the generated secret
+  - `NEXTAUTH_URL` — the Vercel deployment URL (update after first deploy)
+- Run `npx prisma db push` against the production database
+- Run `npx prisma db seed` against the production database
 - Open the live URL and verify login + core flows work
 - Tell the user the production URL and login credentials
 

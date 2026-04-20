@@ -43,13 +43,19 @@ Build and deploy this to Vercel.
 - Node.js 18+
 - Git configured
 - Vercel CLI: `npm i -g vercel && vercel login`
-- Neon PostgreSQL account: https://neon.tech (free tier)
+- Docker with PostgreSQL running:
+  ```
+  docker run --name postgres-db -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+  ```
+  *(already running if you see `postgres-db` in `docker ps`)*
 
 ## Environment Setup
 
 ```bash
 cp .env.example .env
-# Edit .env with your real Neon connection string and auth secret
+# .env is pre-configured for local Docker PostgreSQL:
+# DATABASE_URL="postgresql://postgres:postgres@localhost:5432/officesupply"
+# Update NEXTAUTH_SECRET with a real random value
 ```
 
 ## MCP Tools

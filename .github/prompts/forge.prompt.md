@@ -1,7 +1,7 @@
 ---
 description: "FORGE — Build and deploy a complete app from a problem statement"
 mode: "agent"
-tools: ["sequential-thinking", "playwright"]
+tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
 ---
 
 # FORGE Orchestrator

@@ -1,7 +1,7 @@
 ---
 description: "Analyze a problem statement and produce a structured development plan"
 mode: "agent"
-tools: ["sequential-thinking"]
+tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
 ---
 
 # Planning Agent
